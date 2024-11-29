@@ -37,13 +37,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         userEntity.getRoles().stream()
                 .flatMap(role -> role.getPermissions().stream())
                 .forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
-        return new User(userEntity.getUsername(),
+        // Regresamos el usuario con datos y permisos
+        return new User(
+                userEntity.getUsername(),
                 userEntity.getPassword(),
                 userEntity.isEnabled(),
                 userEntity.isAccountNonExpired(),
                 userEntity.isAccountNonLocked(),
                 userEntity.isCredentialNoExpired(),
-                authorities
-        );
+                authorities);
     }
 }
