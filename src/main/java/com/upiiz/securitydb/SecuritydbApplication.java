@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 import java.util.Set;
 
+import com.upiiz.securitydb.entities.*;
+
 @SpringBootApplication
 public class SecuritydbApplication {
 
@@ -120,7 +122,7 @@ public class SecuritydbApplication {
             userRepository.save(ana);
 
              */
-            userRepository.saveAll(List.of(juan, jose,admin, guest, ana));
+            userRepository.saveAll(List.of(juan, jose, admin, guest, ana));
 
         };
     }

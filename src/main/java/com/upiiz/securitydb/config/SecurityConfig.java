@@ -31,14 +31,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .csrf().disable()
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/facturas/listar").hasAuthority("READ");
-                    http.requestMatchers(HttpMethod.PUT, "/api/v1/facturas/actualizar").hasAuthority("UPDATE");
-                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/eliminar").hasAuthority("DELETE");
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/facturas/crear").hasAuthority("CREATE");
-                    http.anyRequest().denyAll();
+                .authorizeHttpRequests(auth -> {
+                    //http.anyRequest().permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/facturas/**").hasAuthority("READ");
+                    auth.requestMatchers(HttpMethod.PUT, "/api/v1/facturas/**").hasAuthority("UPDATE");
+                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/**").hasAuthority("DELETE");
+                    auth.requestMatchers(HttpMethod.POST, "/api/v1/facturas/**").hasAuthority("CREATE");
+                    auth.anyRequest().authenticated();
                 })
                 .build();
     }
@@ -51,8 +53,8 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailServiceImpl userDetailService) throws Exception {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailService);
         return daoAuthenticationProvider;
     }
 
