@@ -1,9 +1,11 @@
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\config\SecurityConfig.java
-C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\controllers\FacturaController.java
+C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\controllers\FacturasController.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\entities\PermissionEntity.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\entities\RoleEntity.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\entities\RoleEnum.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\entities\UserEntity.java
-C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\repository\UserRepository.java
+C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\repositories\PermissionRepository.java
+C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\repositories\RoleRepository.java
+C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\repositories\UserRepository.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\SecuritydbApplication.java
 C:\Users\alons\OneDrive - Instituto Politecnico Nacional\Des. de Aplic. Web client and Backend\Spring Boot\securitydb\src\main\java\com\upiiz\securitydb\services\UserDetailServiceImpl.java

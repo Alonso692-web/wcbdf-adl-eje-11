@@ -1,10 +1,7 @@
 package com.upiiz.securitydb;
 
-import com.upiiz.securitydb.entities.PermissionEntity;
-import com.upiiz.securitydb.entities.RoleEntity;
-import com.upiiz.securitydb.entities.RoleEnum;
-import com.upiiz.securitydb.entities.UserEntity;
-import com.upiiz.securitydb.repository.UserRepository;
+import com.upiiz.securitydb.entities.*;
+import com.upiiz.securitydb.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 import java.util.Set;
 
-import com.upiiz.securitydb.entities.*;
-
 @SpringBootApplication
 public class SecuritydbApplication {
 
@@ -22,110 +17,117 @@ public class SecuritydbApplication {
         SpringApplication.run(SecuritydbApplication.class, args);
     }
 
-    //
     @Bean
     CommandLineRunner init(UserRepository userRepository) {
         return args -> {
-            // CREAR PERMISOS
+            // Crear permisos
             PermissionEntity createPermission = PermissionEntity
                     .builder()
                     .name("CREATE")
                     .build();
-            PermissionEntity deletePermission = PermissionEntity
+
+            PermissionEntity readPermission = PermissionEntity
                     .builder()
-                    .name("DELETE")
+                    .name("READ")
                     .build();
+
             PermissionEntity updatePermission = PermissionEntity
                     .builder()
                     .name("UPDATE")
                     .build();
-            PermissionEntity readPermision = PermissionEntity
+
+            PermissionEntity deletePermission = PermissionEntity
                     .builder()
-                    .name("READ")
+                    .name("DELETE")
                     .build();
-            PermissionEntity deployPermision = PermissionEntity
+
+            PermissionEntity deployPermission = PermissionEntity
                     .builder()
                     .name("DEPLOY")
                     .build();
-            // Crear ROLES
-            RoleEntity adminRole = RoleEntity
+
+            // Guardar permisos en la base de datos
+//			permissionRepository.saveAll(List.of(createPermission, readPermission, updatePermission, deletePermission, deployPermission));
+
+
+            // Crear roles
+            RoleEntity adminRol = RoleEntity
                     .builder()
                     .roleEnum(RoleEnum.ADMIN)
-                    .permissions(Set.of(createPermission, deletePermission, updatePermission, readPermision))
+                    .permissions(Set.of(createPermission, readPermission, updatePermission, deletePermission))
                     .build();
-            RoleEntity userRole = RoleEntity
-                    .builder()
-                    .roleEnum(RoleEnum.USER)
-                    .permissions(Set.of(updatePermission, readPermision))
-                    .build();
-            RoleEntity guestRole = RoleEntity
+
+            RoleEntity guestRol = RoleEntity
                     .builder()
                     .roleEnum(RoleEnum.GUEST)
-                    .permissions(Set.of(readPermision))
+                    .permissions(Set.of(readPermission))
                     .build();
-            RoleEntity developerRole = RoleEntity
+
+            RoleEntity userRol = RoleEntity
+                    .builder()
+                    .roleEnum(RoleEnum.USER)
+                    .permissions(Set.of(readPermission, updatePermission))
+                    .build();
+
+            RoleEntity developerRol = RoleEntity
                     .builder()
                     .roleEnum(RoleEnum.DEVELOPER)
-                    .permissions(Set.of(deployPermision, createPermission, deletePermission, updatePermission, readPermision))
+                    .permissions(Set.of(createPermission, readPermission, updatePermission, deletePermission, deployPermission))
                     .build();
-            // USUARIOS
-            UserEntity juan = UserEntity
+
+            // Guardar roles en la base de datos
+//			rolRepository.saveAll(List.of(adminRol, guestRol, userRol, developerRol));
+
+
+            // Crear usuarios
+            UserEntity user1 = UserEntity
                     .builder()
-                    .username("juan")
+                    .username("dev")
                     .password("1234")
-                    .isEnabled(true)
-                    .accountNonExpired(true)
-                    .credentialNoExpired(true)
-                    .roles(Set.of(developerRole))
+                    .isEnable(true)
+                    .isAccountNonExpired(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .roles(Set.of(developerRol))
                     .build();
-            UserEntity jose = UserEntity
+
+            UserEntity user2 = UserEntity
                     .builder()
-                    .username("jose")
+                    .username("alonso")
                     .password("1234")
-                    .isEnabled(true)
-                    .accountNonExpired(true)
-                    .credentialNoExpired(true)
-                    .roles(Set.of(userRole))
+                    .isEnable(true)
+                    .isAccountNonExpired(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .roles(Set.of(userRol))
                     .build();
-            UserEntity admin = UserEntity
+
+            UserEntity user3 = UserEntity
+                    .builder()
+                    .username("felipe")
+                    .password("1234")
+                    .isEnable(true)
+                    .isAccountNonExpired(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .roles(Set.of(guestRol))
+                    .build();
+
+            UserEntity user4 = UserEntity
                     .builder()
                     .username("admin")
                     .password("1234")
-                    .isEnabled(true)
-                    .accountNonExpired(true)
-                    .credentialNoExpired(true)
-                    .roles(Set.of(adminRole))
+                    .isEnable(true)
+                    .isAccountNonExpired(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .roles(Set.of(adminRol))
                     .build();
-            UserEntity guest = UserEntity
-                    .builder()
-                    .username("guest")
-                    .password("1234")
-                    .isEnabled(true)
-                    .accountNonExpired(true)
-                    .credentialNoExpired(true)
-                    .roles(Set.of(guestRole))
-                    .build();
-            UserEntity ana = UserEntity
-                    .builder()
-                    .username("ana")
-                    .password("1234")
-                    .isEnabled(true)
-                    .accountNonExpired(true)
-                    .credentialNoExpired(true)
-                    .roles(Set.of(developerRole))
-                    .build();
-            // Guardar usuarios - Creamos el repositorio
-            /*
-            userRepository.save(juan);
-            userRepository.save(jose);
-            userRepository.save(admin);
-            userRepository.save(ana);
 
-             */
-            userRepository.saveAll(List.of(juan, jose, admin, guest, ana));
+            // Guardar en la base de datos - creamos el repositorio
+            userRepository.saveAll(List.of(user1, user2, user3, user4));
 
         };
     }
-
 
 }

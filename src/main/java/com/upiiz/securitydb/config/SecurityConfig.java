@@ -1,13 +1,11 @@
 package com.upiiz.securitydb.config;
 
-import com.upiiz.securitydb.services.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,32 +13,31 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import com.upiiz.securitydb.services.UserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
     @Autowired
-    AuthenticationConfiguration authenticationConfiguration;
+    private AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf().disable()
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/v1/facturas/**"))
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> {
-                    //http.anyRequest().permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/facturas/**").hasAuthority("READ");
-                    auth.requestMatchers(HttpMethod.PUT, "/api/v1/facturas/**").hasAuthority("UPDATE");
-                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/**").hasAuthority("DELETE");
-                    auth.requestMatchers(HttpMethod.POST, "/api/v1/facturas/**").hasAuthority("CREATE");
-                    auth.anyRequest().authenticated();
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(http -> {
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/facturas/**").hasAnyAuthority("READ")
+                            .requestMatchers(HttpMethod.POST, "/api/v1/facturas/**").hasAnyAuthority("CREATE")
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/facturas/**").hasAnyAuthority("UPDATE")
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/**").hasAnyAuthority("DELETE")
+                            .anyRequest().denyAll();
                 })
                 .build();
     }
@@ -51,16 +48,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailServiceImpl userDetailService) throws Exception {
+    public AuthenticationProvider authenticationProvider(UserDetailServiceImpl userDetailService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        //return new BCryptPasswordEncoder();
         return NoOpPasswordEncoder.getInstance();
     }
+
 }
