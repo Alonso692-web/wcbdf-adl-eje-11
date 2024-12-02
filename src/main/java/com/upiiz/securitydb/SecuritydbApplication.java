@@ -93,7 +93,7 @@ public class SecuritydbApplication {
 
             UserEntity user2 = UserEntity
                     .builder()
-                    .username("alonso")
+                    .username("user")
                     .password("1234")
                     .isEnable(true)
                     .isAccountNonExpired(true)
@@ -104,7 +104,7 @@ public class SecuritydbApplication {
 
             UserEntity user3 = UserEntity
                     .builder()
-                    .username("felipe")
+                    .username("guest")
                     .password("1234")
                     .isEnable(true)
                     .isAccountNonExpired(true)
