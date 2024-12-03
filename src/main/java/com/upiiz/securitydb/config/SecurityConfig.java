@@ -33,10 +33,11 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/facturas/**").hasAnyAuthority("READ")
-                            .requestMatchers(HttpMethod.POST, "/api/v1/facturas/**").hasAnyAuthority("CREATE")
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/facturas/**").hasAnyAuthority("UPDATE")
-                            .requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/**").hasAnyAuthority("DELETE")
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/facturas/listar/**").hasAnyAuthority("READ")
+                            .requestMatchers(HttpMethod.POST, "/api/v1/facturas/crear/**").hasAnyAuthority("CREATE")
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/facturas/actualizar/**").hasAnyAuthority("UPDATE")
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/facturas/eliminar/**").hasAnyAuthority("DELETE")
+                            .requestMatchers(HttpMethod.PATCH, "api/v1/facturas/deploy/**").hasAuthority("DEPLOY")
                             .anyRequest().denyAll();
                 })
                 .build();

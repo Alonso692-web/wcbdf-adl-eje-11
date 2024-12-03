@@ -46,10 +46,6 @@ public class SecuritydbApplication {
                     .name("DEPLOY")
                     .build();
 
-            // Guardar permisos en la base de datos
-//			permissionRepository.saveAll(List.of(createPermission, readPermission, updatePermission, deletePermission, deployPermission));
-
-
             // Crear roles
             RoleEntity adminRol = RoleEntity
                     .builder()
